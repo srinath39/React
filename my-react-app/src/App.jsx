@@ -4,47 +4,36 @@ import { useRef,useMemo } from 'react'
 import Child from './Child.jsx'
 
 function App() {  
-  const [name,setName] =useState("")
-  const [email,setEmail]=useState("")
-  const [error,setError]=useState("")
+  const [employees,setEmployees]=useState([])
   const [status,setStatus]=useState("")
-  const [loading,setLoading]=useState(false)
-  async function handleSubmit(event){
-    event.preventDefault();
-    if(!name.trim()){
-      setError("Name is empty !")
-      return
-    }
-    if(!email.includes("@")){
-      setError("Email is invalid!")
-      return
-    }
-    setLoading(true)
-
-    try{
-      const response=await fetch("api/fetch")
-      if(!response.ok){
-        throw new Error("Registration failed")
+  const [loading,setLoading]=useState(true)
+  useEffect(()=>{
+    async function retrieveEmployees(){
+      try{
+        const response=await fetch("api/get");
+        if(!response.ok){
+          throw new Error("Failed to Retrive")
+        }
+        const emps=await response.json()
+        setEmployees(emps)
+        setStatus("Employees retrieved successfully !")
+      }catch(err){
+        setStatus(err.message || "something went wrong")
+      }finally{
+        setLoading(false)
       }
-      setStatus("Registration is successful")
-    }catch(err){
-      setStatus(err.message || "Somehting went wrong")
     }
-    finally{
-      setLoading(false)
-    }
-  } 
+    retrieveEmployees();
+  },[])
   return(
     <>
-    <form onSubmit={handleSubmit}>
-      <input value={name} onChange={(event)=>setName(event.target.value)} />
-      <input value={email} onChange={(event)=>setEmail(event.target.value)} />
-      {error && <p>{error}</p>}
       {status && <p>{status}</p>}
-      <button type="submit" disabled={loading}>
-        {loading ? "Registering...." :"Register"}
-      </button>
-    </form>
+      {loading && <p>laoding spinner</p>}
+      <ul>
+        {employees.map((emp)=>{
+          return <li key={emp.id}>{emp.name}</li>
+        })}
+      </ul>
     </>
   )
 }
