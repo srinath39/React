@@ -5,6 +5,7 @@ import Child from './Child.jsx'
 import useEmployees from './customHook.jsx'
 import Main from './Context_API/Main.jsx'
 import ShoppingCart from './UseReducer/ShoppingCart.jsx'
+import Parent from './UseState_Context_API/Parent.jsx'
 
 function App() {  
   // const [employees,laoding]=useEmployees();
@@ -18,7 +19,7 @@ function App() {
   //   </ul>
   // </>)
   return (<>
-      <ShoppingCart/>
+      <Parent/>
     </>)
 
 }
