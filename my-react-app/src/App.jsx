@@ -4,6 +4,7 @@ import { useRef,useMemo } from 'react'
 import Child from './Child.jsx'
 import useEmployees from './customHook.jsx'
 import Main from './Context_API/Main.jsx'
+import ShoppingCart from './UseReducer/ShoppingCart.jsx'
 
 function App() {  
   // const [employees,laoding]=useEmployees();
@@ -17,7 +18,7 @@ function App() {
   //   </ul>
   // </>)
   return (<>
-      <Main/>
+      <ShoppingCart/>
     </>)
 
 }
