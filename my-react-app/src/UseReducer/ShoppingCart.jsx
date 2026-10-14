@@ -1,20 +1,22 @@
-import { useState } from "react";
+import { useReducer,useState } from "react";
 import {cItems} from './CartItems'
 
+function reducer(items,action){
+    switch(action.type){
+        case "add":
+            return [...items,action.item]
+        case "remove":
+            return items.filter(it=>it!=items[0])
+        case "clear":
+            return []
+        default:
+            return items
+    }
+}
+
 function ShoppingCart(){
-    const [items,setItems]=useState([])
 
-    function addItems(newItems){
-        setItems(existingItems=>[...existingItems,...newItems])
-    }
-
-    function removeItem(item){
-        setItems(existingItems=>existingItems.filter(it=>it!=item))
-    }
-
-    function clearItems(){
-        setItems([])
-    }
+    const [items,dispatch]=useReducer(reducer,[])
 
     return (<>
         <ul>
@@ -22,9 +24,9 @@ function ShoppingCart(){
                 return <li key={item.id}>{item.name}</li>
             })}
         </ul>
-        <button onClick={()=>addItems(cItems)}> Add Items</button>
-        <button onClick={()=>removeItem(cItems[0])}>Remove first Item</button>
-        <button onClick={()=>clearItems()}>Clear the items</button>
+        <button onClick={()=>dispatch({type:"add",item:cItems[0]})}> Add Items</button>
+        <button onClick={()=>dispatch({type:"remove",item:null})}>Remove first Item</button>
+        <button onClick={()=>dispatch({type:"clear",item:null})}>Clear the items</button>
     </>)
 }
 
